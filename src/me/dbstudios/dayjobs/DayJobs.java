@@ -17,30 +17,30 @@ public class DayJobs extends JavaPlugin {
 	
 	// Listeners
 	private final DayJobsBlockListener blockListener = new DayJobsBlockListener(this);
-	// TODO private final DayJobsPlayerListener playerListener = new DayJobsPlayerListener(this);
+	private final DayJobsPlayerListener playerListener = new DayJobsPlayerListener(this);
 	
 	// Configurations
 	public Configuration conf = new Configuration(new File(defPath + "config.yml"));
-	// TODO: public Configuration players = new Configuration(new File(defPath + "players.yml"));
+	public Configuration players = new Configuration(new File(defPath + "players.yml"));
 	
 	@Override
 	public void onDisable() {
-		// TODO Auto-generated method stub
-		
+		log.info(prefix + " DayJobs is shutting down.");
 	}
 
 	@Override
 	public void onEnable() {
 		conf.load();
 		
-		if (conf.getBoolean("config.debug", false)) {
+		if (conf.getString("config.debug") == "true") {
 			debug = true;
 			log.info(prefix + "Verbose logging enabled.");
 		}
 		
 		PluginManager manager = this.getServer().getPluginManager();
 		manager.registerEvent(Event.Type.BLOCK_PLACE, blockListener, Event.Priority.Normal, this);
-		// TODO: manager.registerEvent(Event.Type.PLAYER_ITEM_HELD, playerListener, Event.Priority.Normal, this);
+		manager.registerEvent(Event.Type.PLAYER_JOIN, playerListener, Event.Priority.Normal, this);
+		// TODO manager.registerEvent(Event.Type.PLAYER_ITEM_HELD, playerListener, Event.Priority.Normal, this);
 		ifDebug("Registered block listener and player listener");
 		
 		log.info(prefix + "DayJobs version 1.0 enabled.");
@@ -62,8 +62,10 @@ public class DayJobs extends JavaPlugin {
 	public Boolean checkMatch(String[] nodes, String block) {
 		Boolean matched = false;
 		
-		for (String node : nodes) {
+		for (String node : nodes) {			
+			ifDebug("Checking node '" + node + "' against block '" + block + "'.");
 			if (node == block) {
+				ifDebug("Match found, returning true.");
 				matched = true;
 			}
 		}
