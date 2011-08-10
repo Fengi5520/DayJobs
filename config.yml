@@ -1,0 +1,60 @@
+config:
+    enabled: true             # I hope to GOD you don't need an explanation for this one...
+    debug: true              # outputs ALL data to the console (such as failed place attempts, job switches, etc)
+    allow-job-change: true    # Allow users to change jobs
+    charge-on-change: false   # Make users pay to change jobs
+    change-cost: 100.00       # If charge-on-change is true, this MUST be set. It is the iConomy cost of a job change
+    allow-all-inventory: true # If set to false, job restricted items are automatically dropped if the player can't use them
+    default-name: Jobless     # Name of the default class
+    all:                      # Items, blocks, and equipment usable by ALL jobs classes
+        can-use:
+            - WOOD_SWORD
+            - WOOD_HOE
+            - STONE_SWORD
+            - STONE_HOE
+            - BOW
+        can-place:
+            - COBBLESTONE
+            - DIRT
+            - COBBLESTONE_STAIRS
+            - WOOD_STAIRS
+            - STEP
+            - TORCH
+            - WOOL
+            - WOODEN_DOOR
+        can-wear:
+            - LEATHER_HELMET
+            - LEATHER_CHESTPLATE
+            - LEATHER_LEGGINGS
+            - LEATHER_BOOTS
+    jobs:
+        Jobless:
+            friendly-name: Jobless      # the human readable version of the job name, and the text that will appear to players in selection menus
+            description: I'll go look for a job tomorrow mom, I promise!
+            limit: -1
+            can-use: []
+            can-place: []
+            can-wear: []
+        Miner:
+            friendly-name: Miner
+            description: A miner, skilled at extracting ore and minerals from the earth. # A short description of the job
+            limit: -1            # How many players can be this class. A limit of -1 means infinite
+            can-use:             # Which tools this job may use
+                - WOOD_PICKAXE
+                - STONE_PICKAXE
+                - IRON_PICKAXE
+                - GOLD_PICKAXE
+                - DIAMOND_PICKAXE
+                - WOOD_SPADE
+                - STONE_SPADE
+                - IRON_SPADE
+                - GOLD_SPADE
+                - DIAMOND_SPADE
+            can-place:           # Which blocks this job may place
+                - DIRT
+                - COBBLESTONE
+            can-wear:
+                - GOLD_HELMET
+                - GOLD_CHESTPLATE
+                - GOLD_LEGGINGS
+                - GOLD_BOOTS
