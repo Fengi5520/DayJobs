@@ -28,24 +28,15 @@ public class DayJobsBlockListener extends BlockListener {
 		block = block.replace("[", "");
 		block = block.replace("]", "");
 		
-		bridge.ifDebug("Checking block placement for player: '" + player.getDisplayName() + "'");
-		
-		bridge.conf.load();
-		String[] canPlace = bridge.parse_list(bridge.conf.getString("config.all.can-place"));
-		
-		// Check once if we should cancel the BlockPlaceEvent
-		Boolean cancel = bridge.checkMatch(canPlace, block);
+		// Check once if we should cancel the BlockPlaceEvent. Since checkMatch
+		// gives 'true' on a match, we must do the opposite of what checkMatch
+		// gives us.
+		Boolean cancel = !(bridge.checkMatch(player.getDisplayName(), block));
 
 		// If our first check failed and CANCEL is still true, check on more time, this time
 		// under the player's job class can-place
 		if (cancel) {
-			String pClass = bridge.players.getString("players." + player.getDisplayName() + ".job");
-			canPlace = bridge.parse_list(bridge.conf.getString("config." + pClass + ".can-place"));
-			
-			if (bridge.checkMatch(canPlace, block)) {
-				cancel = false;
-				bridge.ifDebug("Check called on " + player.getDisplayName() + " has evaluated TRUE for " + block + ".");
-			}
+			cancel = !(bridge.checkMatch(player.getDisplayName(), block));
 		}
 		
 		ev.setCancelled(cancel);

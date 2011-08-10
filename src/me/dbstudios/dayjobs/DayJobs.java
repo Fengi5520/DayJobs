@@ -25,7 +25,7 @@ public class DayJobs extends JavaPlugin {
 	
 	@Override
 	public void onDisable() {
-		log.info(prefix + " DayJobs is shutting down.");
+		log.info(prefix + "DayJobs is shutting down.");
 	}
 
 	@Override
@@ -34,6 +34,7 @@ public class DayJobs extends JavaPlugin {
 		 * the needed listener events.
 		 */
 		conf.load();
+		players.load();
 		
 		if (conf.getString("config.debug") == "true") {
 			debug = true;
@@ -69,15 +70,58 @@ public class DayJobs extends JavaPlugin {
 		return list.split(", ");
 	}
 	
-	public Boolean checkMatch(String[] nodes, String block) {
+	public Boolean checkMatch(String player, String block) {
 		/* Compares each item in NODES to the placed block stored in BLOCK
 		 * If we match, we return true. Otherwise, we return false.
 		 */
 		
+		ifDebug("BlockCheck beginning for player '" + player + "'.");
+		
+		Boolean matched = false;
+		String[] canPlace;
+		String tmp = conf.getString("config.all.can-place");
+		
+		ifDebug("Checking using 'config.all.can-place'");
+		
+		canPlace = parse_list(tmp);
+		
+		for (String item : canPlace) {
+			ifDebug("Checking item '" + item + "' against block '" + block + "'.");
+			
+			if (item == block) {
+				ifDebug("Match found for '" + item + "'.");
+				matched = true;
+				break;
+			}
+		}
+		
+		if (!matched) {
+			String pClass = players.getString("players." + player + ".job");
+			
+			tmp = conf.getString("config.jobs." + pClass + ".can-place");
+			canPlace = parse_list(tmp);
+			
+			ifDebug("Checking using 'config.jobs." + pClass + ".can-place'.");
+			
+			for (String item : canPlace) {
+				ifDebug("Checking item '" + item + "' against block '" + block + "'.");
+				
+				if (item == block) {
+					ifDebug("Match found for '" + item + "'.");
+					matched = true;
+					break;
+				}
+			}
+		}
+		
+		ifDebug("checkMatch returning '" + matched + "'.");
+		return matched;
+		
+		/* Dead code, kept for reference
 		Boolean matched = false;
 		Integer i = 0;
 		
-		while (!matched && i < nodes.length - 1) {
+		while (!matched && i < nodes.length) {
 			ifDebug("Checking node '" + nodes[i] + "' against block '" + block + "'.");
 			if (nodes[i] == block) {
 				matched = true;
@@ -85,10 +129,8 @@ public class DayJobs extends JavaPlugin {
 			
 			i++;
 		}
-		
-		ifDebug("checkMatch returning '" + matched + "'.");
-		return matched;
-		
+		*/
+	
 		/* Dead code, kept for reference.
 		for (String node : nodes) {			
 			ifDebug("Checking node '" + node + "' against block '" + block + "'.");
