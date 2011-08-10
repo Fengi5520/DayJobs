@@ -30,6 +30,9 @@ public class DayJobs extends JavaPlugin {
 
 	@Override
 	public void onEnable() {
+		/* Initial configuration. Load our debug level as well as register
+		 * the needed listener events.
+		 */
 		conf.load();
 		
 		if (conf.getString("config.debug") == "true") {
@@ -48,20 +51,45 @@ public class DayJobs extends JavaPlugin {
 	
 	// Public functions used by Block and Player Listeners
 	public void ifDebug(String msg) {
+		/* The debug handler for DayJobs. Can be called from any function that
+		 * Initializes the DayJobs object to output to our debug log.
+		 */
 		if (debug) {
 			log.info(prefix + msg);
 		}
 	}
 	
 	public String[] parse_list(String list) {
+		/* Strip the starting and ending bracket from a YAML list and parse each comma
+		 * separated element into an array, which we return.
+		 */
+		
 		list = list.replace("[", "");
 		list = list.replace("]", "");
 		return list.split(", ");
 	}
 	
 	public Boolean checkMatch(String[] nodes, String block) {
-		Boolean matched = false;
+		/* Compares each item in NODES to the placed block stored in BLOCK
+		 * If we match, we return true. Otherwise, we return false.
+		 */
 		
+		Boolean matched = false;
+		Integer i = 0;
+		
+		while (!matched && i < nodes.length - 1) {
+			ifDebug("Checking node '" + nodes[i] + "' against block '" + block + "'.");
+			if (nodes[i] == block) {
+				matched = true;
+			}
+			
+			i++;
+		}
+		
+		ifDebug("checkMatch returning '" + matched + "'.");
+		return matched;
+		
+		/* Dead code, kept for reference.
 		for (String node : nodes) {			
 			ifDebug("Checking node '" + node + "' against block '" + block + "'.");
 			if (node == block) {
@@ -71,5 +99,6 @@ public class DayJobs extends JavaPlugin {
 		}
 		
 		return matched;
+		*/
 	}
 }

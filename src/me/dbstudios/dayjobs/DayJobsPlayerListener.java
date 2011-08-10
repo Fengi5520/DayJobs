@@ -9,7 +9,8 @@ public class DayJobsPlayerListener extends PlayerListener {
 	public DayJobsPlayerListener(DayJobs instance) {
 		bridge = instance;
 	}
-	
+	/* Temporarily "locking" this event check. Users MUST be manually entered
+	 * in players.yml
 	public void onPlayerJoin(PlayerJoinEvent ev) {
 		bridge.ifDebug("Getting player info from: players." + ev.getPlayer().getDisplayName() + ".job");
 		String pClass = bridge.players.getString("players." + ev.getPlayer().getDisplayName() + ".job");
@@ -23,4 +24,5 @@ public class DayJobsPlayerListener extends PlayerListener {
 		
 		bridge.ifDebug(ev.getPlayer().getDisplayName() + " has joined as  " + pClass);
 	}
+	*/
 }
