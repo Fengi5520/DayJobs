@@ -1,5 +1,6 @@
 package me.dbstudios.dayjobs;
 
+import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerListener;
 
@@ -9,6 +10,7 @@ public class DayJobsPlayerListener extends PlayerListener {
 	public DayJobsPlayerListener(DayJobs instance) {
 		bridge = instance;
 	}
+	
 	/* Temporarily "locking" this event check. Users MUST be manually entered
 	 * in players.yml
 	public void onPlayerJoin(PlayerJoinEvent ev) {

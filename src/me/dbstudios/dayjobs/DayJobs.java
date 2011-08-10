@@ -3,6 +3,8 @@ package me.dbstudios.dayjobs;
 import java.io.File;
 import java.util.logging.Logger;
 
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 import org.bukkit.event.Event;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -50,6 +52,27 @@ public class DayJobs extends JavaPlugin {
 		log.info(prefix + "DayJobs version 1.0 enabled.");
 	}
 	
+	public boolean onCommand (CommandSender sender, Command cmd, String label, String[] args) {
+		if (label.equalsIgnoreCase("job")) {
+			if (args.length == 0) {
+				return false;
+			} else if (args[0].equalsIgnoreCase("reload")) {
+				sender.sendMessage(prefix + "Reloading configuration...");
+				
+				conf.load();
+				players.load();
+				
+				sender.sendMessage(prefix + "Reload complete.");
+				
+				return true;
+			} else if (args[0].equalsIgnoreCase("list")) {
+				sender.sendMessage(prefix + "Coming soon!!!");
+			}
+		}
+		
+		return false;
+	}
+	
 	// Public functions used by Block and Player Listeners
 	public void ifDebug(String msg) {
 		/* The debug handler for DayJobs. Can be called from any function that
@@ -88,7 +111,7 @@ public class DayJobs extends JavaPlugin {
 		for (String item : canPlace) {
 			ifDebug("Checking item '" + item + "' against block '" + block + "'.");
 			
-			if (item == block) {
+			if (item.equalsIgnoreCase(block)) {
 				ifDebug("Match found for '" + item + "'.");
 				matched = true;
 				break;
@@ -106,7 +129,7 @@ public class DayJobs extends JavaPlugin {
 			for (String item : canPlace) {
 				ifDebug("Checking item '" + item + "' against block '" + block + "'.");
 				
-				if (item == block) {
+				if (item.equalsIgnoreCase(block)) {
 					ifDebug("Match found for '" + item + "'.");
 					matched = true;
 					break;
