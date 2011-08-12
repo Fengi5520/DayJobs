@@ -36,7 +36,7 @@ public class DayJobsBlockListener extends BlockListener {
 		// If our first check failed and CANCEL is still true, check on more time, this time
 		// under the player's job class can-place
 		if (cancel) {
-			cancel = !(bridge.checkMatch(player.getDisplayName(), block));
+			Boolean cancel = !(bridge.checkMatch(player.getDisplayName(), block));
 		}
 		
 		ev.setCancelled(cancel);
